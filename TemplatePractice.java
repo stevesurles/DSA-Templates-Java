@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.Arrays;
 
 public class TemplatePractice {
   private boolean CONDITION = true;
@@ -168,7 +169,7 @@ public class TemplatePractice {
     return list.stream().mapToInt(i -> i).toArray();
   }
 
-  public int bfs(TreeNode root) {
+  public int bfs1(TreeNode root) {
     int ans = 0;
     Queue<TreeNode> queue = new LinkedList<>();
     queue.add(root);
@@ -188,4 +189,83 @@ public class TemplatePractice {
 
     return ans;
   }
+
+  public int bfs2(TreeNode root) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    int res = 0;
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+      int levelCount = queue.size();
+      while (levelCount-- > 0) {
+        var cur = queue.poll();
+        //do logic
+        if (cur.left != null) {
+          queue.offer(cur);
+        }
+        if (cur.right != null) {
+          queue.offer(cur);
+        }
+      }
+    }
+    return res;
+  }
+
+
+  public int twoPointer(int[] arr) {
+    int l = 0, r = arr.length() - 1;
+    
+    while (l < r) {
+      
+      if (CONDITION) {
+        l++;
+      } else {
+        r--;
+      }
+    }
+
+  }
+
+
+  public int twoPointerExhaustBoth(int[] arr1, int[] arr2) {
+    int i1 = 0, i2 = 0;
+    while (arr1.length() > i1 && arr2.length > i2) {
+      // do logic
+      if (CONDITION) {
+        i1++;
+      } else {
+        i2++;
+      }
+    }
+    while (arr1.length() > i1) {
+      i1++;
+    }
+
+    while (arr2.length()) > i2) {
+      i2++;
+    }
+    return 0;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
