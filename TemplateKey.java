@@ -4,9 +4,10 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
-class Arrays {
+class TemplateKey {
   private boolean CONDITION = true;
   private boolean WINDOW_CONDITION_BROKEN = true;
+
   public static void main(String[] args) {
     // Your code here
   }
@@ -26,13 +27,12 @@ class Arrays {
     return res;
   }
 
-
-  //two pointer exhaust both
+  // two pointer exhaust both
   public int twoPointerExhaustBoth(int[] arr1, int[] arr2) {
     int i1 = 0, i2 = 0, res = 0;
 
     while (i1 < arr1.length && i2 < arr1.length) {
-      //do logic with arr1 & arr2
+      // do logic with arr1 & arr2
       if (CONDITION) {
         i1++;
       } else {
@@ -184,7 +184,7 @@ class Arrays {
     int ans = 0;
     while (!stack.empty()) {
       TreeNode node = stack.pop();
-      //Do Logic
+      // Do Logic
       if (node.left != null) {
         stack.push(node.left);
       }
@@ -203,10 +203,10 @@ class Arrays {
 
     while (!queue.isEmpty()) {
       int len = queue.size();
-      //do logic for current level
+      // do logic for current level
       for (int i = 0; i < len; i++) {
         TreeNode node = queue.poll();
-        //do logic
+        // do logic
         if (node.left != null) {
           queue.add(node.left);
         }
@@ -217,6 +217,5 @@ class Arrays {
     }
     return ans;
   }
-
 
 }

@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class SlidingWindows {
+public class SlidingWindowsKey {
   public boolean checkInclusion(String s1, String s2) {
     if (s1.length() > s2.length())
       return false;
