@@ -1,3 +1,12 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
+
+import ListNode;
 
 class Arrays {
   public static void main(String[] args) {
@@ -59,34 +68,130 @@ class Arrays {
     }
     return 0;
   }
-}
 
-class TreeNode {
-  int val;
-  TreeNode left;
-  TreeNode right;
-
-  public TreeNode(int val) {
-    this.val = val;
-    this.left = null;
-    this.right = null;
-  }
-}
-
-class ListNode {
-  int val;
-  ListNode next;
-
-  public ListNode() {
-  };
-
-  public ListNode(int val) {
-    this.val = val;
+  // build a prefix sum
+  // everytime we create a prefix, maintain a count of it necause we may use it
+  // multiple times.
+  // after
+  // check if hashmap should be added to this
+  // https://www.youtube.com/watch?v=fFVZt-6sgyo
+  public int[] buildPrefixSum(int[] arr) {
+    int[] prefix = new int[arr.length];
+    prefix[0] = arr[0];
+    for (var i = 0; i < arr.length; i++) {
+      prefix[i] = prefix[i - 1] + arr[i];
+    }
+    return prefix;
   }
 
-  public ListNode(int val, ListNode next) {
-    this.val = val;
-    this.next = next;
+  // Find number of subarrays that fit an exact criteria
+  public int nbrOfSubArraysWExactCriteria(int[] arr, int k) {
+    Map<Integer, Integer> counts = new HashMap<>();
+    counts.put(0, 1);
+    int ans = 0, cur = 0;
+
+    for (int num : arr) {
+      // do logic to change cur
+
+      ans += counts.getOrDefault(cur - k, 0);
+      counts.put(cur, counts.getOrDefault(cur, 0) + 1);
+    }
+
+    return ans;
   }
 
+  // effecient string building
+  public String stringBuilder(char[] arr) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : arr) {
+      sb.append(c);
+    }
+
+    return sb.toString();
+  }
+
+  // Link List: Fast and slow Pointer
+  public int fastAndSlow(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    int ans = 0;
+    while (fast != null && slow != null) {
+      // do logic
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    return ans;
+  }
+
+  // Reverse Linked List
+  public ListNode reverseLinkedList(ListNode head) {
+    ListNode cur = head;
+    ListNode prev = null;
+    while (cur != null) {
+      var next = cur.next;
+      cur.next = prev;
+      prev = cur;
+      cur = next;
+    }
+    return prev;
+  }
+
+  public int monotonicIncreasingStack1(int[] arr) {
+    Stack<Integer> stack = new Stack<>();
+    int ans = 0;
+    for (int num : arr) {
+      while (!stack.empty() && stack.peek() > num) {
+        ans += stack.pop();
+      }
+      stack.push(num);
+    }
+    return ans;
+  }
+
+  public int monotonicIncreasingStack2(int[] arr) {
+    Stack<Integer> stack = new Stack<>();
+    for (var num : arr) {
+      // do logic
+      while (!stack.empty() && stack.peek() > num) {
+        stack.pop();
+      }
+      stack.push(num);
+    }
+    return 0;
+  }
+
+  public int[] monotonicIncreasingStack3(int[] nums) {
+    Stack<Integer> stack = new Stack<>();
+    List<Integer> list = new ArrayList<Integer>();
+    for (var num : nums) {
+      while (!stack.empty() && stack.peek() > num) {
+        list.add(stack.pop());
+      }
+      stack.push(num);
+    }
+
+    // return list.toArray(new Integer[0]);
+    return list.stream().mapToInt(i -> i).toArray();
+  }
+
+  public int bfs(TreeNode root) {
+    int ans = 0;
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+    while (!queue.isEmpty()) {
+      int levelCount = queue.size();
+      for (int i = 0; i < levelCount; i++) {
+        TreeNode node = queue.poll();
+        //do logic
+        if (node.left != null) {
+          queue.add(node.left);
+        }
+        if (node.right != null) {
+          queue.add(node.right);
+        }
+      }
+    }
+
+    return ans;
+  }
 }
