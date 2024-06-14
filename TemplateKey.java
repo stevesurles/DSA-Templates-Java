@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -14,7 +15,7 @@ class TemplateKey {
 
   // two pointer processing
   public int twoPointer(int[] arr) {
-    int l = 0, r = arr.length() - 1;
+    int l = 0, r = arr.length - 1;
     int res = 0;
     while (l < r) {
       // Do logic here with left and right;
@@ -31,7 +32,7 @@ class TemplateKey {
   public int twoPointerExhaustBoth(int[] arr1, int[] arr2) {
     int i1 = 0, i2 = 0, res = 0;
 
-    while (i1 < arr1.length() && i2 < arr1.length()) {
+    while (i1 < arr1.length && i2 < arr1.length) {
       // do logic with arr1 & arr2
       if (CONDITION) {
         i1++;
@@ -41,11 +42,11 @@ class TemplateKey {
 
     }
 
-    while (i1 < arr1.length()) {
+    while (i1 < arr1.length) {
       // do logic
       i1++;
     }
-    while (i2 < arr2.length()) {
+    while (i2 < arr2.length) {
       // do logic
       i2++;
     }
@@ -79,7 +80,7 @@ class TemplateKey {
   public int[] buildPrefixSum(int[] arr) {
     int[] prefix = new int[arr.length];
     prefix[0] = arr[0];
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 1; i < arr.length; i++) {
       prefix[i] = prefix[i - 1] + arr[i];
     }
     return prefix;
@@ -138,20 +139,37 @@ class TemplateKey {
   }
 
   // Monotonic increasing stack
-  public int monotonicIncreasingStack(int[] arr) {
+  // https://leetcode.com/discuss/study-guide/2347639/A-comprehensive-guide-and-template-for-monotonic-stack-based-problems
+  public int[] monotonicIncreasingStack1(int[] arr) {
     Stack<Integer> stack = new Stack<>();
-    int ans = 0;
-
+    int[] nextGreater = new int[arr.length];
+    int i = 0;
     for (int num : arr) {
       // for monotonic decreasing, flip the > to <
       while (!stack.empty() && stack.peek() > num) {
         // do logic
-        stack.pop();
+        nextGreater[i++] = stack.pop(); //TODO verify this
+
       }
 
       stack.push(num);
     }
-    return ans;
+    return nextGreater;
+  }
+  //check if this works
+  public int[] monotonicIncreasingStack2(int[] arr) {
+    Stack<Integer> stack = new Stack<>();
+    int i = 0;
+
+    for (int num : arr) {
+      while (!stack.empty() && stack.peek() > num) {
+        arr[i] = stack.pop();
+      }
+      stack.push(num);
+    }
+
+    return arr;
+
   }
 
   // Binary tree: DFS (recursive)
@@ -165,6 +183,9 @@ class TemplateKey {
     return ans;
   }
 
+  //Why is dfs iterative with a stack and bfs with a queue?
+  // DFS is iterative with a stack because we need to keep track of the nodes that we have visited but have not yet explored. We use a stack to do this because it follows the LIFO principle. This means that the last node that we visited will be the first node that we explore.
+  // BFS is iterative with a queue because we need to keep track of the nodes that we have visited but have not yet explored. We use a queue to do this because it follows the FIFO principle. This means that the first node that we visited will be the first node that we explore.
   // Binary tree: DFS (iterative)
   public int dfsIterative(TreeNode root) {
     Stack<TreeNode> stack = new Stack<>();
@@ -190,9 +211,9 @@ class TemplateKey {
     int ans = 0;
 
     while (!queue.isEmpty()) {
-      int len = queue.size();
+      int levelSize = queue.size();
       // do logic for current level
-      for (int i = 0; i < len; i++) {
+      while (levelSize-- > 0) {
         TreeNode node = queue.poll();
         // do logic
         if (node.left != null) {
