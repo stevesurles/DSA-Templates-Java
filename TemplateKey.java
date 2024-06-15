@@ -1,8 +1,10 @@
 import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 class TemplateKey {
@@ -148,7 +150,7 @@ class TemplateKey {
       // for monotonic decreasing, flip the > to <
       while (!stack.empty() && stack.peek() > num) {
         // do logic
-        nextGreater[i++] = stack.pop(); //TODO verify this
+        nextGreater[i++] = stack.pop(); // TODO verify this
 
       }
 
@@ -156,7 +158,8 @@ class TemplateKey {
     }
     return nextGreater;
   }
-  //check if this works
+
+  // check if this works
   public int[] monotonicIncreasingStack2(int[] arr) {
     Stack<Integer> stack = new Stack<>();
     int i = 0;
@@ -183,9 +186,15 @@ class TemplateKey {
     return ans;
   }
 
-  //Why is dfs iterative with a stack and bfs with a queue?
-  // DFS is iterative with a stack because we need to keep track of the nodes that we have visited but have not yet explored. We use a stack to do this because it follows the LIFO principle. This means that the last node that we visited will be the first node that we explore.
-  // BFS is iterative with a queue because we need to keep track of the nodes that we have visited but have not yet explored. We use a queue to do this because it follows the FIFO principle. This means that the first node that we visited will be the first node that we explore.
+  // Why is dfs iterative with a stack and bfs with a queue?
+  // DFS is iterative with a stack because we need to keep track of the nodes that
+  // we have visited but have not yet explored. We use a stack to do this because
+  // it follows the LIFO principle. This means that the last node that we visited
+  // will be the first node that we explore.
+  // BFS is iterative with a queue because we need to keep track of the nodes that
+  // we have visited but have not yet explored. We use a queue to do this because
+  // it follows the FIFO principle. This means that the first node that we visited
+  // will be the first node that we explore.
   // Binary tree: DFS (iterative)
   public int dfsIterative(TreeNode root) {
     Stack<TreeNode> stack = new Stack<>();
@@ -227,4 +236,70 @@ class TemplateKey {
     return ans;
   }
 
+  // Graph DFS (recursive)
+  class DFSGraphRecursive {
+    Set<Integer> seen = new HashSet<>();
+
+    public int graphDFS(int[][] graph) {
+      int startNode = graph[0][0];
+      seen.add(startNode);
+      return dfsGraph(startNode, graph);
+    }
+
+    public int dfsGraph(int node, int[][] graph) {
+      int ans = 0;
+      // do logic
+      for (int neighbor : graph[node]) {
+        if (!seen.contains(neighbor)) {
+          seen.add(neighbor);
+          ans += dfsGraph(neighbor, graph);
+        }
+      }
+      return ans;
+    }
+  }
+  //graph iterative
+  private int DFSGraphIterative(int[][] graph) {
+    Stack<Integer> stack = new Stack<>();
+    Set<Integer> seen = new HashSet<>();
+    int ans = 0;
+    int startNode = graph[0][0];
+    stack.push(startNode);
+    seen.add(startNode);
+
+    while (!stack.empty()) {
+      int node = stack.pop();
+      //do logic
+      for (int neighbor : graph[node]) {
+        if (!seen.contains(neighbor)) {
+          seen.add(neighbor);
+          stack.push(neighbor);
+        }
+      }
+    }
+
+    return ans;
+  }
+
+  //graph BFS
+  private int graphBFS(int[][] graph) {
+    Queue<Integer> queue = new LinkedList<>();
+    Set<Integer> seen = new HashSet<>();
+    int startNode = graph[0][0];
+    queue.add(startNode);
+    seen.add(startNode);
+
+    while (!queue.isEmpty()) {
+      int node = queue.remove();
+      for (int neighbor : graph[node]) {
+        if (!seen.contains(neighbor)) {
+          seen.add(neighbor);
+          queue.add(neighbor);
+        }
+      }
+    }
+    
+    return ans;
+    
+  }
 }
