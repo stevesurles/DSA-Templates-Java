@@ -2,13 +2,13 @@ import java.util.Arrays;
 
 public class SlidingWindowsKey {
   public boolean checkInclusion(String s1, String s2) {
-    if (s1.length() > s2.length())
+    if (s1.length > s2.length)
       return false;
     // Create two int arrays
     var s1Count = new int[26];
     var s2Count = new int[26];
-    var s1Len = s1.length();
-    var s2Len = s2.length();
+    var s1Len = s1.length;
+    var s2Len = s2.length;
 
     // count first s1.count chars
     for (var i = 0; i < s1Len; i++) {
