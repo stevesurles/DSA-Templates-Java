@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class ArraysDSA {
+public class ArraysAndHashing {
   public boolean containsDuplicate(int[] nums) {
     HashSet<Integer> set = new HashSet<Integer>();
     for (int num : nums) {

@@ -1,12 +1,16 @@
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+//Reference: https://leetcode.com/explore/interview/card/cheatsheets/720/resources/4723/
 class TemplateKey {
   private boolean CONDITION = true;
   private boolean WINDOW_CONDITION_BROKEN = true;
@@ -166,7 +170,7 @@ class TemplateKey {
 
     for (int num : arr) {
       while (!stack.empty() && stack.peek() > num) {
-        arr[i] = stack.pop();
+        arr[i++] = stack.pop();
       }
       stack.push(num);
     }
@@ -302,4 +306,231 @@ class TemplateKey {
     return ans;
     
   }
+
+  //find top k elements with a priority queue
+  public int[] topKElements(int[] arr, int k) {
+    PriorityQueue<Integer> heap = new PriorityQueue<>();
+    for (int num : arr) {
+      heap.add(num);
+      while (heap.size() > k) {
+        heap.remove();
+      }
+    }
+
+    int[] ans = new int[k];
+    for (int i = 0; i < ans.length; i++) {
+      ans[i] = heap.remove();
+    }
+
+    return ans;
+
+  }
+
+
+  // binary search
+
+  public int binarySearch(int[] arr, int target) {
+    int l = 0, r = arr.length - 1;
+    while (l < r) {
+      var m = l + (r - l) / 2;
+      if (arr[m] == target) {
+        return m;
+      }
+      if (arr[m] > target) {
+        r = m - 1;
+      } else {
+        l = m + 1;
+      }
+    }
+    return l;
+  }
+  // TODO: find examples
+  // binary search: duplicate elements, left-most insertion point
+  public int binarySearchDupsL(int[] arr, int target) {
+    int l = 0;
+    int r = arr.length;
+    while (l < r) {
+      int m = l + (r - l) / 2;
+      if (arr[m] >= target) {
+        r = m;
+      } else {
+        l = m + 1;
+      }
+    }
+    return l;
+  }
+
+  // binary search: duplicate elements, right-most insertion point
+  public int binarySearchDupsR(int[] arr, int target) {
+    int l = 0;
+    int r = arr.length;
+    while (l < r) {
+      int m = l + (r - l) / 2;
+      if (arr[m] > target) {
+        r = m;
+      } else {
+        l = m + 1;
+      }
+    }
+    return l;
+  }
+
+  // binary search: Gready
+  final int MINIMUM_POSSIBLE_ANSWER = 0;
+  final int MAXIMUM_POSSIBLE_ANSWER = 100;
+  public int binarySeachGreedy(int[] arr) {
+    int l = MINIMUM_POSSIBLE_ANSWER;
+    int r = MAXIMUM_POSSIBLE_ANSWER;
+    while (l <= r) {
+      var m = l + (r - l) / 2;
+      if (check(m)) {
+        r = m - 1;
+      } else {
+        l = m + 1;
+      }
+
+    }
+
+    return l;
+  }
+
+  public boolean check(int x) {
+    boolean res = false;
+    //do logic
+    return res;
+  }
+
+  //backtracking template
+  /*
+   * public int backtrack(STATE curr, OTHER_ARGUMENTS...) {
+   * if (BASE_CASE) {
+   * // modify the answer
+   * return 0;
+   * }
+   * 
+   * int ans = 0;
+   * for (ITERATE_OVER_INPUT) {
+   * // modify the current state
+   * ans += backtrack(curr, OTHER_ARGUMENTS...)
+   * // undo the modification of the current state
+   * }
+   * }
+   */
+
+  //backtracking subsets
+  class Subsets {
+    List<List<Integer>> res;
+
+    public List<List<Integer>> subsets(int[] nums) {
+      List<Integer> subset = new ArrayList<Integer>();
+      res = new ArrayList<>();
+      int i = 0;
+      backtracking(nums, subset, i);
+      return res;
+    }
+
+    private void backtracking(int[] nums, List<Integer> subset, int i) {
+      if (i >= nums.length) {
+        res.add(new ArrayList<>(subset));
+        return;
+      }
+
+      subset.add(nums[i]);
+      backtracking(nums, subset, i + 1);
+      subset.remove(subset.size() - 1);
+      backtracking(nums, subset, i + 1);
+    }
+  }
+
+  //backtracking permutations
+  class Permutations {
+    public List<List<Integer>> permute(int[] nums) {
+      List<List<Integer>> ans = new ArrayList<>();
+      backtrack(new ArrayList<>(), ans, nums);
+      return ans;
+    }
+
+    public void backtrack(
+        List<Integer> curr,
+        List<List<Integer>> ans,
+        int[] nums) {
+      if (curr.size() == nums.length) {
+        ans.add(new ArrayList<>(curr));
+        return;
+      }
+
+      for (int num : nums) {
+        if (!curr.contains(num)) {
+          curr.add(num);
+          backtrack(curr, ans, nums);
+          curr.remove(curr.size() - 1);
+        }
+      }
+    }
+  }
+
+  //dp template
+  /*
+   * Map<STATE, Integer> memo = new HashMap<>();
+   * 
+   * public int fn(int[] arr) {
+   * return dp(STATE_FOR_WHOLE_INPUT, arr);
+   * }
+   * 
+   * public int dp(STATE, int[] arr) {
+   * if (BASE_CASE) {
+   * return 0;
+   * }
+   * 
+   * if (memo.contains(STATE)) {
+   * return memo.get(STATE);
+   * }
+   * 
+   * int ans = RECURRENCE_RELATION(STATE);
+   * memo.put(STATE, ans);
+   * return ans;
+   * }
+   */
+  //Dynamic programming: top-down memoization
+  public class dpRecussion {
+    public int climbStairs(int n) {
+      int memo[] = new int[n + 1];
+      return climb_Stairs(0, n, memo);
+    }
+
+    public int climb_Stairs(int i, int n, int memo[]) {
+      if (i > n) {
+        return 0;
+      }
+      if (i == n) {
+        return 1;
+      }
+      if (memo[i] > 0) {
+        return memo[i];
+      }
+      memo[i] = climb_Stairs(i + 1, n, memo) + climb_Stairs(i + 2, n, memo);
+      return memo[i];
+    }
+  }
+
+  public class dpIterative {
+    public int climbStairs(int n) {
+      if (n == 1) {
+        return 1;
+      }
+      int[] dp = new int[n + 1];
+      dp[1] = 1;
+      dp[2] = 2;
+      for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+      }
+      return dp[n];
+    }
+  }
+
+  //last 2 templates:
+  //trie
+
+  // dijkstra's algo
+
 }
